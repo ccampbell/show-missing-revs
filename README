@@ -1,13 +1,11 @@
-**This script requires Subversion 1.5 or later**
-
-Find revisions that have not been merged in subversion.
+Find revisions that have not been merged in Subversion (requires version 1.5 or later).
 
 This script is useful if you have development happening simultaneously in multiple branches and have a hard time keeping track of what has and hasn't been merged.
 
 Instructions:
 
 cd to base directory of branch or trunk (does not work from subdirectory)
-/path/to/./show_missing_revs -b (branch that you are merging into the current directory) -u (optional - username)
+sh /path/to/show_missing_revs.sh -b (branch that you are merging into the current directory) -u (optional - username)
 
 The script will output something like:
 r9943 | bowser
