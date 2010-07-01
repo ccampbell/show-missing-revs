@@ -8,9 +8,9 @@ cd to base directory of branch or trunk (does not work from subdirectory)
 sh /path/to/show_missing_revs.sh -b (branch that you are merging into the current directory) -u (optional - username)
 
 The script will output something like:
-r9943 | bowser
-r10123 | mario
-r10127 | luigi
-r10128 | luigi
+r9943 | bowser | unleashing koopa troopas
+r10123 | mario | trying to save the princess
+r10127 | luigi | looking cool wearing green
+r10128 | luigi | eating mushrooms
 
 This means those revisions are present in the branch specified by -b but not in the current branch.

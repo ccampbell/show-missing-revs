@@ -89,8 +89,21 @@ svn log $branch -$first_revision:$final_revision > revisions_in_range.txt
 output=
 for i in "${revisions[@]}"
     do
-        adding=`cat revisions_in_range.txt | grep $i | cut -d '|' -f 1,2 -s`
-        output=$output$adding"\n"
+        grep_result=`cat revisions_in_range.txt | grep -n $i | cut -d '|' -f 1,2 -s`
+        
+        line_number=`echo $grep_result | cut -d ':' -f 1`
+        commit_info=`echo $grep_result | cut -d ':' -f 2`
+        
+        # commit message comes two lines after the line
+        typeset -i message_line=$((line_number+2))
+        
+        # grab the commit message
+        message=`tail +$message_line revisions_in_range.txt | head -1`
+        
+        # append the commit message to the other info
+        commit_info=$commit_info" | "$message
+        
+        output=$output$commit_info"\n"
     done
 
 if [ ! $username ] ; then
@@ -102,7 +115,7 @@ else
 fi
 
 # cleanup - remove the temporary files
-rm eligible_revs.txt
-rm revisions_in_range.txt
+# rm eligible_revs.txt
+# rm revisions_in_range.txt
 
 exit 0
