@@ -85,12 +85,20 @@ final_revision=${revisions[$final_count]}
 # get the svn log for this range and write it out to a file for now
 svn log $branch -$first_revision:$final_revision > revisions_in_range.txt
 
+# find the intersection between the missing revs and the logs
+output=
+for i in "${revisions[@]}"
+    do
+        adding=`cat revisions_in_range.txt | grep $i | cut -d '|' -f 1,2 -s`
+        output=$output$adding"\n"
+    done
+
 if [ ! $username ] ; then
-    # if we are not targeting a specific username then output the revisions
-    cat revisions_in_range.txt | cut -d '|' -f 1,2 -s
+    # if we are not targeting a specific username then output the revisions that intersect
+    echo $output
 else
     # output the revisions for just this user
-    cat revisions_in_range.txt | cut -d '|' -f 1,2 -s | grep $username
+    echo $output | grep $username
 fi
 
 # cleanup - remove the temporary files
