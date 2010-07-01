@@ -115,7 +115,7 @@ else
 fi
 
 # cleanup - remove the temporary files
-# rm eligible_revs.txt
-# rm revisions_in_range.txt
+rm eligible_revs.txt
+rm revisions_in_range.txt
 
 exit 0
