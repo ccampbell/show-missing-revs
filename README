@@ -4,8 +4,8 @@ This script is useful if you have development happening simultaneously in multip
 
 Instructions:
 
-cd to base directory of branch or trunk (does not work from subdirectory)
-sh /path/to/show_missing_revs.sh -b (branch that you are merging into the current directory) -u (optional - username)
+cd to base directory of branch or trunk
+sh /path/to/show_missing_revs.sh -b (branch that you are merging into the current directory) -u (optional - username) -v (optional - verbose mode)
 
 The script will output something like:
 r9943 | bowser | unleashing koopa troopas
