@@ -21,9 +21,9 @@
 #
 usage_and_exit()
 {
-    echo "usage instructions:\n"
+    printf "%b\n" "usage instructions:\n"
     echo "required arguments:"
-    echo "-b branch => name of branch that you want to merge to current branch\n"
+    printf "%b\n" "-b branch => name of branch that you want to merge to current branch\n"    
     echo "optional arguments:"
     echo "-u username => target svn user to see what he/she has not yet merged"
     echo "-v verbose => show more information about what is happening as it happens"
@@ -119,7 +119,7 @@ fi
 
 # get the count of the last item
 # (-1 because there is a new line at end of the file)
-final_count=${#revisions[*]}-1
+typeset -i final_count=${#revisions[*]}-1
 
 #revision range
 first_revision=${revisions[0]}
@@ -137,36 +137,38 @@ if [ $verbose ] ; then
 fi
 
 # find the intersection between the missing revs and the logs
-output=
+touch missing_revs_output.txt
+
 for i in "${revisions[@]}"
     do
         grep_result=`cat revisions_in_range.txt | grep -n $i | cut -d '|' -f 1,2 -s`
-        
         line_number=`echo $grep_result | cut -d ':' -f 1`
         commit_info=`echo $grep_result | cut -d ':' -f 2`
-        
+
         # commit message comes two lines after the line
         typeset -i message_line=$((line_number+2))
         
         # grab the commit message
-        message=`tail +$message_line revisions_in_range.txt | head -1`
-        
+        message=`sed -n "${message_line}p" revisions_in_range.txt`
+
         # append the commit message to the other info
         commit_info=$commit_info" | "$message
         
-        output=$output$commit_info"\n"
+        echo $commit_info >> missing_revs_output.txt
     done
 
 if [ ! $username ] ; then
     # if we are not targeting a specific username then output the revisions that intersect
-    echo $output
+    cat missing_revs_output.txt
 else
     # output the revisions for just this user
-    echo $output | grep $username
+    cat missing_revs_output.txt | grep $username
 fi
 
 # cleanup - remove the temporary files
 rm eligible_revs.txt
 rm revisions_in_range.txt
+rm missing_revs_output.txt
 
 exit 0
+
